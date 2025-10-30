@@ -1,3 +1,6 @@
+"""
+A simple implementation of a Load Balancer
+"""
 import os
 import socket
 import threading
