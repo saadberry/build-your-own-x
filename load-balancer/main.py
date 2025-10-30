@@ -1,19 +1,25 @@
+import os
 import socket
 import threading
 
+from dotenv import load_dotenv
+
+# Load secrets
+load_dotenv()
+
 # Server data
-backend_ip = "127.0.0.1"
-server_port_1 = 9000
-server_port_2 = 9001
+backend_ip = os.getenv("BACKEND_IP")
+server_port_1 = os.getenv("SERVER_PORT_1")
+server_port_2 = os.getenv("SERVER_PORT_2")
 
 # Loadbalancer data
-loadbalancer_ip = "0.0.0.0"
-loadbalancer_port = 8080
+loadbalancer_ip = os.getenv("LOADBALANCER_IP")
+loadbalancer_port = os.getenv("LOADBALANCER_PORT")
 
 # List of available backend servers
 backends = [
-    (backend_ip, server_port_1),
-    (backend_ip, server_port_2),
+    (backend_ip, int(server_port_1)),
+    (backend_ip, int(server_port_2)),
 ]
 
 # ID of server to use
@@ -57,7 +63,7 @@ def start_load_balancer(host=loadbalancer_ip, port=loadbalancer_port):
     """
     global current
     lb_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    lb_socket.bind((host, port))
+    lb_socket.bind((host, int(port)))
     lb_socket.listen(5)
     print(f"Load balancer listening on {host}:{port}")
 
